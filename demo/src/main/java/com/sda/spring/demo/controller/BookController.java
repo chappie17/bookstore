@@ -6,53 +6,39 @@ import com.sda.spring.demo.model.Category;
 import com.sda.spring.demo.repository.AuthorRepository;
 import com.sda.spring.demo.repository.BookRepository;
 import com.sda.spring.demo.repository.CategoryRepository;
+import com.sda.spring.demo.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 public class BookController {
 
     @Autowired
-    private BookRepository bookRepository;
+    private BookService bookService;
     @Autowired
     private CategoryRepository categoryRepository;
     @Autowired
     private AuthorRepository authorRepository;
 
-//    @RequestMapping(value = "/", method = RequestMethod.GET)
-//    public String hello() {
-//        return "Hello";
-//    }
-//
-//    @RequestMapping(value = "/test", method = RequestMethod.GET)
-//    public String test() {
-//        return "This is test";
-//    }
-
     @RequestMapping(value = "/api/books", method = RequestMethod.GET)
     public List<Book> books() {
-        List<Book> books = bookRepository.findAll();
-        return books;
+        return bookService.getBooks();
     }
 
     @RequestMapping(value = "/api/books", method = RequestMethod.POST)
     public Book addBook(@RequestBody Book book) {
-        return bookRepository.save(book);
+        return bookService.addBook(book);
     }
 
     @RequestMapping(value = "/api/categories", method = RequestMethod.POST)
-    public Category addCategory(@RequestBody Category category){
+    public Category addCategory(@RequestBody Category category) {
         return categoryRepository.save(category);
     }
 
     @RequestMapping(value = "/api/authors", method = RequestMethod.POST)
-    public Author addAuthor(@RequestBody Author author){
+    public Author addAuthor(@RequestBody Author author) {
         return authorRepository.save(author);
     }
 
@@ -66,6 +52,11 @@ public class BookController {
     public List<Author> authors() {
         List<Author> authors = authorRepository.findAll();
         return authors;
+    }
+
+    @RequestMapping(value = "/api/books/{id}", method = RequestMethod.GET)
+    public Book book(@PathVariable Long id) {
+        return bookService.findById(id);
     }
 
 }
