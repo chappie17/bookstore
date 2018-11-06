@@ -1,5 +1,6 @@
 package com.sda.spring.demo.service;
 
+import com.sda.spring.demo.exceptions.AuthorNotFoundException;
 import com.sda.spring.demo.interfaces.AuthorInterface;
 import com.sda.spring.demo.model.Author;
 import com.sda.spring.demo.repository.AuthorRepository;
@@ -26,7 +27,7 @@ public class AuthorService implements AuthorInterface {
 
     @Override
     public Author findById(Long id) {
-        return authorRepository.findById(id).get();
+        return authorRepository.findById(id).orElseThrow(() ->new AuthorNotFoundException(id));
     }
 
     @Override

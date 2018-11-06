@@ -6,7 +6,9 @@ import com.sda.spring.demo.model.Category;
 import com.sda.spring.demo.repository.AuthorRepository;
 import com.sda.spring.demo.repository.BookRepository;
 import com.sda.spring.demo.repository.CategoryRepository;
+import com.sda.spring.demo.service.AuthorService;
 import com.sda.spring.demo.service.BookService;
+import com.sda.spring.demo.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +22,9 @@ public class BookController {
     @Autowired
     private BookService bookService;
     @Autowired
-    private CategoryRepository categoryRepository;
+    private CategoryService categoryService;
     @Autowired
-    private AuthorRepository authorRepository;
+    private AuthorService authorService;
 
     @RequestMapping(value = "/api/books", method = RequestMethod.GET)
     public List<Book> books() {
@@ -36,24 +38,17 @@ public class BookController {
 
     @RequestMapping(value = "/api/categories", method = RequestMethod.POST)
     public Category addCategory(@RequestBody Category category) {
-        return categoryRepository.save(category);
+        return categoryService.addCategory(category);
     }
 
     @RequestMapping(value = "/api/authors", method = RequestMethod.POST)
     public Author addAuthor(@RequestBody Author author) {
-        return authorRepository.save(author);
-    }
-
-    @RequestMapping(value = "/api/categories", method = RequestMethod.GET)
-    public List<Category> categories() {
-        List<Category> categories = categoryRepository.findAll();
-        return categories;
+        return authorService.addAuthor(author);
     }
 
     @RequestMapping(value = "/api/authors", method = RequestMethod.GET)
-    public List<Author> authors() {
-        List<Author> authors = authorRepository.findAll();
-        return authors;
+    public List<Author> authors(){
+        return authorService.getAuthors();
     }
 
     @RequestMapping(value = "/api/books/{id}", method = RequestMethod.GET)
@@ -61,4 +56,13 @@ public class BookController {
         return ResponseEntity.status(HttpStatus.OK).body(bookService.findById(id));
     }
 
+    @RequestMapping(value = "/api/categories/{id}", method = RequestMethod.GET)
+    public ResponseEntity <Category> category (@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(categoryService.findById(id));
+    }
+
+    @RequestMapping(value = "/api/authors/{id}", method = RequestMethod.GET)
+    public ResponseEntity <Author> author (@PathVariable Long id){
+        return ResponseEntity.status(HttpStatus.OK).body(authorService.findById(id));
+    }
 }

@@ -1,5 +1,6 @@
 package com.sda.spring.demo.service;
 
+import com.sda.spring.demo.exceptions.CategoryNotFoundException;
 import com.sda.spring.demo.interfaces.CategoryInterface;
 import com.sda.spring.demo.model.Category;
 import com.sda.spring.demo.repository.CategoryRepository;
@@ -26,7 +27,7 @@ public class CategoryService implements CategoryInterface {
 
     @Override
     public Category findById(Long id) {
-        return categoryRepository.findById(id).get();
+        return categoryRepository.findById(id).orElseThrow(()->new CategoryNotFoundException(id));
     }
 
 }
