@@ -1,5 +1,6 @@
 package com.sda.spring.demo.service;
 
+import com.sda.spring.demo.exceptions.BookNotFoundException;
 import com.sda.spring.demo.interfaces.BookInterface;
 import com.sda.spring.demo.model.Book;
 import com.sda.spring.demo.repository.BookRepository;
@@ -26,7 +27,7 @@ public class BookService implements BookInterface {
 
     @Override
     public Book findById(Long id) {
-        return bookRepository.findById(id).get();
+        return bookRepository.findById(id).orElseThrow(()->new BookNotFoundException(id));
     }
 
     @Override
