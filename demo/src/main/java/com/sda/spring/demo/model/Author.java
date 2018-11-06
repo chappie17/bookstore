@@ -1,6 +1,8 @@
 package com.sda.spring.demo.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Entity
@@ -9,13 +11,15 @@ public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @NotNull
+    @Size(min = 2, max = 20, message = "from 2 to 20 marks")
     private String name;
-
+    @NotNull
+    @Size(min = 2, max = 20, message = "from 2 to 20 marks")
     private String lastname;
 
     @ManyToMany(mappedBy = "authors")
-    private Set<Book>books;
+    private Set<Book> books;
 
     public Author(String name, String lastname) {
         this.name = name;

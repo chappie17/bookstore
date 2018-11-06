@@ -1,6 +1,8 @@
 package com.sda.spring.demo.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Entity
@@ -9,7 +11,8 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @NotNull
+    @Size(min = 2, max = 50, message = "from 2 to 50 marks")
     private String name;
 
     @OneToMany(mappedBy = "category")

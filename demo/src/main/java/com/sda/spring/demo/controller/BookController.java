@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -32,18 +33,23 @@ public class BookController {
     }
 
     @RequestMapping(value = "/api/books", method = RequestMethod.POST)
-    public Book addBook(@RequestBody Book book) {
-        return bookService.addBook(book);
+    public ResponseEntity<Book> addBook(@Valid @RequestBody Book book) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(bookService.addBook(book));
     }
 
     @RequestMapping(value = "/api/categories", method = RequestMethod.POST)
-    public Category addCategory(@RequestBody Category category) {
-        return categoryService.addCategory(category);
+    public ResponseEntity<Category> addCategory(@Valid @RequestBody Category category) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(categoryService.addCategory(category));
     }
 
     @RequestMapping(value = "/api/authors", method = RequestMethod.POST)
-    public Author addAuthor(@RequestBody Author author) {
-        return authorService.addAuthor(author);
+    public ResponseEntity <Author> addAuthor(@Valid @RequestBody Author author) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(authorService.addAuthor(author));
+    }
+
+    @RequestMapping(value = "/api/categories", method = RequestMethod.GET)
+    public List <Category>categories(){
+        return categoryService.getCategories();
     }
 
     @RequestMapping(value = "/api/authors", method = RequestMethod.GET)

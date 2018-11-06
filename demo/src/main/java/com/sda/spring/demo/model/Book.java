@@ -1,6 +1,8 @@
 package com.sda.spring.demo.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Entity
@@ -9,7 +11,8 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @NotNull
+    @Size(min = 1, max = 100, message = "from 1 to 100 marks")
     private String title;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
