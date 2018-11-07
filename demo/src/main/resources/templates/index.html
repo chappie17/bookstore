@@ -7,9 +7,21 @@
 <body>
 <h1>Bookstore</h1>
 
-<table>
+<table border="1">
+    <tr>
+        <td>Book title</td>
+        <td>Category</td>
+        <td>Author</td>
+    </tr>
     <tr th:each="book : ${books}">
         <td th:text="${book.getTitle()}"></td>
+        <td th:text="${book.getCategory().getName()}"></td>
+        <td>
+            <div th:each="author : ${book.getAuthors()}">
+                <span th:text="${author.getName()}"></span>
+                <span th:text="${author.getLastname()}"></span>
+            </div>
+        </td>
     </tr>
 </table>
 
