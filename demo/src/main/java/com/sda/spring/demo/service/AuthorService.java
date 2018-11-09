@@ -34,4 +34,8 @@ public class AuthorService implements AuthorInterface {
     public Author findByLastname(String lastname) {
         return authorRepository.findByLastname(lastname);
     }
+
+    public Author findByName(String name){
+        return authorRepository.findByName(name);
+    }
 }

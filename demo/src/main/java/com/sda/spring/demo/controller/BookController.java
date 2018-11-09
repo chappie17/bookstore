@@ -3,9 +3,6 @@ package com.sda.spring.demo.controller;
 import com.sda.spring.demo.model.Author;
 import com.sda.spring.demo.model.Book;
 import com.sda.spring.demo.model.Category;
-import com.sda.spring.demo.repository.AuthorRepository;
-import com.sda.spring.demo.repository.BookRepository;
-import com.sda.spring.demo.repository.CategoryRepository;
 import com.sda.spring.demo.service.AuthorService;
 import com.sda.spring.demo.service.BookService;
 import com.sda.spring.demo.service.CategoryService;
@@ -27,6 +24,7 @@ public class BookController {
     @Autowired
     private AuthorService authorService;
 
+    @CrossOrigin(value = "http://localhost:8000")
     @RequestMapping(value = "/api/books", method = RequestMethod.GET)
     public List<Book> books() {
         return bookService.getBooks();
@@ -37,11 +35,13 @@ public class BookController {
         return ResponseEntity.status(HttpStatus.CREATED).body(bookService.addBook(book));
     }
 
+    @CrossOrigin(value = "http://localhost:8000")
     @RequestMapping(value = "/api/categories", method = RequestMethod.POST)
     public ResponseEntity<Category> addCategory(@Valid @RequestBody Category category) {
         return ResponseEntity.status(HttpStatus.CREATED).body(categoryService.addCategory(category));
     }
 
+    @CrossOrigin(value = "http://localhost:8000")
     @RequestMapping(value = "/api/authors", method = RequestMethod.POST)
     public ResponseEntity <Author> addAuthor(@Valid @RequestBody Author author) {
         return ResponseEntity.status(HttpStatus.CREATED).body(authorService.addAuthor(author));
