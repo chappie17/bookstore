@@ -27,11 +27,20 @@ public class CategoryService implements CategoryInterface {
 
     @Override
     public Category findById(Long id) {
-        return categoryRepository.findById(id).orElseThrow(()->new CategoryNotFoundException(id));
+        return categoryRepository.findById(id).orElseThrow(() -> new CategoryNotFoundException(id));
     }
 
-    public Category getCategoryByName (String name){
+    public Category getCategoryByName(String name) {
         return categoryRepository.findByName(name);
+    }
+
+    public Category updateCategory(Long id, Category category) {
+        Category tempCategory = categoryRepository.findById(id).orElseThrow(
+                () -> new CategoryNotFoundException(id)
+        );
+        tempCategory.setName(category.getName());
+        Category updatedCategory = categoryRepository.save(tempCategory);
+        return updatedCategory;
     }
 
 }

@@ -15,7 +15,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-public class BookController {
+public class BookRestController {
 
     @Autowired
     private BookService bookService;
@@ -70,5 +70,10 @@ public class BookController {
     @RequestMapping(value = "/api/authors/{id}", method = RequestMethod.GET)
     public ResponseEntity <Author> author (@PathVariable Long id){
         return ResponseEntity.status(HttpStatus.OK).body(authorService.findById(id));
+    }
+
+    @RequestMapping(value = "/api/categories/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<Category> updateCategory(@PathVariable Long id, @RequestBody Category category){
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(categoryService.updateCategory(id, category));
     }
 }
