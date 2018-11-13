@@ -17,7 +17,7 @@ public class SecurityFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 
         System.out.println(servletRequest.getRemoteAddr());
-        if (servletRequest.getRemoteAddr().equals("192.168.3.195")){
+        if (servletRequest.getRemoteAddr().equals("127.0.0.1")){
             filterChain.doFilter(servletRequest, servletResponse);
         }
         else {

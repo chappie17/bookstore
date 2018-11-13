@@ -1,30 +1,34 @@
 package com.sda.spring.demo.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sda.spring.demo.model.Author;
 import com.sda.spring.demo.model.Category;
+import com.sda.spring.demo.model.Person;
+import com.sda.spring.demo.repository.AuthorRepository;
+import com.sda.spring.demo.repository.BookRepository;
+import com.sda.spring.demo.repository.CategoryRepository;
+import com.sda.spring.demo.service.AuthorService;
+import com.sda.spring.demo.service.BookService;
 import com.sda.spring.demo.service.CategoryService;
-import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.BDDMockito;
 import org.mockito.Mockito;
 import org.mockito.internal.verification.VerificationModeFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
@@ -35,7 +39,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
 @WebMvcTest(BookRestController.class)
 public class BookRestControllerTest {
 
@@ -45,23 +48,38 @@ public class BookRestControllerTest {
     @MockBean
     private CategoryService categoryService;
 
+    @MockBean
+    private AuthorService authorService;
+
     private ObjectMapper objectMapper = new ObjectMapper();
+
+    @Test
+    public void shouldActualizeCategoryWhithNullId() throws Exception {
+
+        given(categoryService.findById(anyLong())).willReturn(null);
+        Category category = new Category("Tales");
+        ResultActions resultActions = mockMvc.perform(put("/api/categories/10")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(category)));
+
+        resultActions.andExpect(status().isNoContent());
+    }
 
     @Test
     public void shouldUpdateCategory() throws Exception {
 
         Category category = new Category("Fairytale");
-        category.setId(100L);
+        //category.setId(100L);
 
         given(categoryService.findById(100L)).willReturn(category);
         ResultActions resultActions = mockMvc.perform(put("/api/categories/100")
-        .contentType(MediaType.APPLICATION_JSON)
-        .content(objectMapper.writeValueAsString(category)));
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(category)));
 
         resultActions.andExpect(status().isNoContent());
     }
 
-/*    @Test
+    @Test
     public void givenCategories_thenReturnJsonArray() throws Exception {
 
         Category category0 = new Category("fantasy");
@@ -79,7 +97,36 @@ public class BookRestControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(5)));
 
-        Mockito.verify(categoryService, VerificationModeFactory.times(2)).getCategories();
-    }*/
+        Mockito.verify(categoryService, VerificationModeFactory.times(1)).getCategories();
+    }
 
+    @Test
+    public void shouldCheckIfAuthorsAreAvailableOnGetMethod() throws Exception {
+
+        Author author1 = new Author("Bob", "Singer");
+        Author author2 = new Author("Dean", "Winch");
+        Author author3 = new Author("Sarah", "Debrich");
+
+        List<Author> authors = Arrays.asList(author1, author2, author3);
+
+        given(authorService.getAuthors()).willReturn(authors);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/authors")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(3)));
+
+        Mockito.verify(authorService, VerificationModeFactory.times(1)).getAuthors();
+    }
+
+    @Test
+    public void shouldPostAuthorOnTheRepository() throws Exception {
+
+        Author author = new Author("Bobby", "Carter");
+        ResultActions resultActions = mockMvc.perform(post("/api/authors")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(author)));
+
+        resultActions.andExpect(status().isCreated());
+    }
 }

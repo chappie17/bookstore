@@ -43,16 +43,16 @@ public class DemoApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        Person person = applicationContext.getBean(Person.class);
-        person.setName("HUMAN");
-        System.out.println(person.getName());
-
-        Set<Author> authors = new HashSet<>();
-        authors.add(new Author("Bob", "Singer"));
-        Book book0 = new Book("Supernatural");
-        book0.setCategory(new Category("Fantasy"));
-        book0.setAuthors(authors);
-        bookRepository.save(book0);
+//        Person person = applicationContext.getBean(Person.class);
+//        person.setName("HUMAN");
+//        System.out.println(person.getName());
+//
+//        Set<Author> authors = new HashSet<>();
+//        authors.add(new Author("Bob", "Singer"));
+//        Book book0 = new Book("Supernatural");
+//        book0.setCategory(new Category("Fantasy"));
+//        book0.setAuthors(authors);
+//        bookRepository.save(book0);
     }
 
 }

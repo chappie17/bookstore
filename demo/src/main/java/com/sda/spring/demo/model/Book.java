@@ -15,10 +15,10 @@ public class Book {
     @Size(min = 1, max = 100, message = "from 1 to 100 marks")
     private String title;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private Category category;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = CascadeType.MERGE)
     private Set<Author> authors;
 
     public Book() {
