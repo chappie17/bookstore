@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+
 @Controller
 public class WebController {
 
@@ -30,7 +31,7 @@ public class WebController {
     private UserService userService;
 
     @GetMapping(value = "/index")
-    public ModelAndView index(){
+    public ModelAndView index() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.addObject("books", bookService.getBooks());
         modelAndView.setViewName("index");
@@ -38,7 +39,7 @@ public class WebController {
     }
 
     @GetMapping(value = "/category")
-    public ModelAndView category(){
+    public ModelAndView category() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("category");
         modelAndView.addObject("category", new Category());
@@ -46,27 +47,35 @@ public class WebController {
     }
 
     @PostMapping(value = "category")
-    public void addCategory (@ModelAttribute("category") Category category){
+    public void addCategory(@ModelAttribute("category") Category category) {
         categoryService.addCategory(category);
         System.out.println(category.toString());
     }
 
     @PostMapping(value = "author")
-    public void addAuthor (@ModelAttribute("author") Author author){
+    public void addAuthor(@ModelAttribute("author") Author author) {
         authorService.addAuthor(author);
         System.out.println(author.toString());
     }
 
     @GetMapping(value = "/author")
-    public ModelAndView author(){
+    public ModelAndView author() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("author");
         modelAndView.addObject("author", new Author());
         return modelAndView;
     }
 
+    @GetMapping(value = "/login")
+    public ModelAndView login() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("login");
+        modelAndView.addObject("login", new User());
+        return modelAndView;
+    }
+
     @GetMapping(value = "/register")
-    public ModelAndView user(){
+    public ModelAndView user() {
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("register");
         modelAndView.addObject("register", new User());
@@ -74,7 +83,12 @@ public class WebController {
     }
 
     @PostMapping(value = "register")
-    public void addUser(@ModelAttribute("register") User user){
-       userService.addUser(user);
+    public ModelAndView createNewUser(@ModelAttribute("user") User user) {
+        ModelAndView modelAndView = new ModelAndView();
+        userService.addUser(user);
+        modelAndView.addObject("successMessage", "User has been registered successfully");
+        modelAndView.addObject("register", new User());
+        modelAndView.setViewName("register");
+        return modelAndView;
     }
 }

@@ -17,12 +17,14 @@
             <input type="text" class="form-control" th:field="*{lastname}" placeholder="Enter lastname">
             <label>Password:</label>
             <input type="password" class="form-control" th:field="*{password}" placeholder="Enter password">
-            <label>E-mail:</label>
+            <label>Username:</label>
             <input type="text" class="form-control" th:field="*{username}" placeholder="Enter username">
             <label>Phone:</label>
             <input type="tel" class="form-control" th:field="*{phone}" placeholder="Enter phone">
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
+
+        <span th:utext="${successMessage}"></span>
     </form>
 
 </div>
